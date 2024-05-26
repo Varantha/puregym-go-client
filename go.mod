@@ -1,4 +1,4 @@
-module github.com/varantha/puregym-api
+module github.com/varantha/puregym-go-client
 
 go 1.22.2
 
