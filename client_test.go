@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/h2non/gock"
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -36,13 +37,13 @@ func TestNewClient(t *testing.T) {
 
 	client := NewClient(ValidEmail, ValidPin)
 
-	if client.username != ValidEmail {
-		t.Errorf("Expected username to be %s, got %s", ValidEmail, client.username)
-	}
+	t.Run("username set correctly", func(t *testing.T) {
+		assert.Equal(t, ValidEmail, client.username)
+	})
 
-	if client.password != ValidPin {
-		t.Errorf("Expected password to be %s, got %s", ValidPin, client.password)
-	}
+	t.Run("pin set correctly", func(t *testing.T) {
+		assert.Equal(t, ValidPin, client.password)
+	})
 }
 
 func TestLogin(t *testing.T) {
