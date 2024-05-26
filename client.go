@@ -2,7 +2,9 @@ package puregymapi
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -28,6 +30,10 @@ type (
 		Expires_in  int    `json:"expires_in"`
 		Token_type  string `json:"token_type"`
 		Scope       string `json:"scope"`
+	}
+	errorResponse struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
 	}
 )
 
@@ -86,5 +92,41 @@ func (c *Client) Login() error {
 	}
 
 	c.token = tokenResponse.AccessToken
+	return nil
+}
+
+func (c *Client) sendRequest(method string, route string, body io.Reader, v interface{}) error {
+	requestPath := fmt.Sprintf("%s%s", c.baseURL, route)
+
+	req, err := http.NewRequest(method, requestPath, body)
+
+	if err != nil {
+		return fmt.Errorf("error creating request: %v", err)
+	}
+
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("User-Agent", "PureGym/1523 CFNetwork/1312 Darwin/21.0.0")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.token))
+
+	res, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer res.Body.Close()
+
+	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
+		var errRes errorResponse
+		if err = json.NewDecoder(res.Body).Decode(&errRes); err == nil {
+			return errors.New(errRes.Message)
+		}
+
+		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
+	}
+
+	if err = json.NewDecoder(res.Body).Decode(&v); err != nil {
+		return err
+	}
+
 	return nil
 }
