@@ -83,12 +83,25 @@ var (
 func TestGetMember(t *testing.T) {
 	defer gock.Off()
 
+	setupMockLogin()
+
 	gock.New("https://capi.puregym.com").
 		Get("/api/v2/member").
+		MatchHeader("Authorization", "^Bearer\\s.+").
 		Reply(200).
 		JSON(GetMemberSuccessResponse)
 
+	gock.New("https://capi.puregym.com").
+		Get("/api/v2/member").
+		Reply(401)
+
 	client := NewClient(ValidEmail, ValidPin)
+
+	t.Run("unauthenticated request fails", func(t *testing.T) {
+		_, err := client.GetMember()
+		assert.Error(t, err)
+	})
+
 	client.Login()
 
 	t.Run("returns member information", func(t *testing.T) {
@@ -100,4 +113,5 @@ func TestGetMember(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expectedResponse, response)
 	})
+
 }

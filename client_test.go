@@ -27,13 +27,17 @@ var (
 	InvalidPin   = "43214321"
 )
 
-func TestNewClient(t *testing.T) {
-	defer gock.Off()
-
+func setupMockLogin() {
 	gock.New("https://auth.puregym.com").
 		Post("/connect/token").
 		Reply(200).
 		JSON(SuccessfulTokenResponse)
+}
+
+func TestNewClient(t *testing.T) {
+	defer gock.Off()
+
+	setupMockLogin()
 
 	client := NewClient(ValidEmail, ValidPin)
 
