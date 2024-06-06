@@ -88,14 +88,14 @@ type GetMemberQRCodeResponse struct {
 }
 
 type GetMembershipResponse struct {
-	Name              string    `json:"Name"`
-	Level             string    `json:"Level"`
-	StartDate         time.Time `json:"StartDate"`
-	EndDate           time.Time `json:"EndDate"`
-	PaymentDayOfMonth int       `json:"PaymentDayOfMonth"`
-	HoursOfAccess     time.Time `json:"MemberStatus"`
-	IncludedGyms      []Gym     `json:"IncludedGyms"`
-	FreezeDetails     string    `json:"FreezeDetails"`
+	Name              string      `json:"Name"`
+	Level             string      `json:"Level"`
+	StartDate         interface{} `json:"StartDate"`
+	EndDate           interface{} `json:"EndDate"`
+	PaymentDayOfMonth int         `json:"PaymentDayOfMonth"`
+	HoursOfAccess     interface{} `json:"MemberStatus"`
+	IncludedGyms      []Gym       `json:"IncludedGyms"`
+	FreezeDetails     string      `json:"FreezeDetails"`
 }
 
 // GetMember gets information for the currently logged in member including Personal details, Home Gym details, and membership status

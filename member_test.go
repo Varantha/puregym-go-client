@@ -91,10 +91,10 @@ var (
 	GetMembershipSuccessResponse = GetMembershipResponse{
 		Name:              "PremiumMultiAccess",
 		Level:             "PremiumMultiAccess",
-		StartDate:         time.Time{},
-		EndDate:           time.Time{},
+		StartDate:         nil,
+		EndDate:           nil,
 		PaymentDayOfMonth: 9,
-		HoursOfAccess:     time.Time{},
+		HoursOfAccess:     nil,
 		IncludedGyms: []Gym{
 			{
 				ID:     1,
