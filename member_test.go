@@ -152,15 +152,7 @@ func TestGetMember(t *testing.T) {
 
 	setupMockLogin()
 
-	gock.New("https://capi.puregym.com").
-		Get("/api/v2/member").
-		MatchHeader("Authorization", "^Bearer\\s.+").
-		Reply(200).
-		JSON(GetMemberSuccessResponse)
-
-	gock.New("https://capi.puregym.com").
-		Get("/api/v2/member").
-		Reply(401)
+	setupDefaultMockRoutes("/api/v2/member", GetMemberSuccessResponse)
 
 	client := NewClient(ValidEmail, ValidPin)
 
@@ -187,16 +179,7 @@ func TestGetMemberQRCode(t *testing.T) {
 	defer gock.Off()
 
 	setupMockLogin()
-
-	gock.New("https://capi.puregym.com").
-		Get("/api/v2/member/qrcode").
-		MatchHeader("Authorization", "^Bearer\\s.+").
-		Reply(200).
-		JSON(GetMemberQRCodeSuccessResponse)
-
-	gock.New("https://capi.puregym.com").
-		Get("/api/v2/member/qrcode").
-		Reply(401)
+	setupDefaultMockRoutes("/api/v2/member/qrcode", GetMemberQRCodeSuccessResponse)
 
 	client := NewClient(ValidEmail, ValidPin)
 
@@ -224,15 +207,7 @@ func TestGetMembership(t *testing.T) {
 
 	setupMockLogin()
 
-	gock.New("https://capi.puregym.com").
-		Get("/api/v2/member/membership").
-		MatchHeader("Authorization", "^Bearer\\s.+").
-		Reply(200).
-		JSON(GetMembershipSuccessResponse)
-
-	gock.New("https://capi.puregym.com").
-		Get("/api/v2/member/qrcode").
-		Reply(401)
+	setupDefaultMockRoutes("/api/v2/member/membership", GetMembershipSuccessResponse)
 
 	client := NewClient(ValidEmail, ValidPin)
 
