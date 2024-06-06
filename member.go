@@ -1,5 +1,7 @@
 package puregymapi
 
+import "time"
+
 type ID struct {
 	ExternalID string `json:"ExternalId"`
 	CompoundID string `json:"CompoundId"`
@@ -58,7 +60,7 @@ type GymAccess struct {
 	ReopenDate           string                `json:"ReopenDate"`
 }
 
-type HomeGym struct {
+type Gym struct {
 	ID          int            `json:"Id"`
 	Name        string         `json:"Name"`
 	Status      string         `json:"Status"`
@@ -71,10 +73,29 @@ type HomeGym struct {
 type GetMemberResponse struct {
 	ID              ID              `json:"Id"`
 	PersonalDetails PersonalDetails `json:"PersonalDetails"`
-	HomeGym         HomeGym         `json:"HomeGym"`
+	HomeGym         Gym             `json:"HomeGym"`
 	GymAccessPin    string          `json:"GymAccessPin"`
 	SuspendedReason string          `json:"SuspendedReason"`
 	MemberStatus    string          `json:"MemberStatus"`
+}
+
+type GetMemberQRCodeResponse struct {
+	QrCode    string    `json:"QrCode"`
+	RefreshAt time.Time `json:"RefreshAt"`
+	ExpiresAt time.Time `json:"ExpiresAt"`
+	RefreshIn string    `json:"RefreshIn"`
+	ExpiresIn string    `json:"ExpiresIn"`
+}
+
+type GetMembershipResponse struct {
+	Name              string    `json:"Name"`
+	Level             string    `json:"Level"`
+	StartDate         time.Time `json:"StartDate"`
+	EndDate           time.Time `json:"EndDate"`
+	PaymentDayOfMonth int       `json:"PaymentDayOfMonth"`
+	HoursOfAccess     time.Time `json:"MemberStatus"`
+	IncludedGyms      []Gym     `json:"IncludedGyms"`
+	FreezeDetails     string    `json:"FreezeDetails"`
 }
 
 // GetMember gets information for the currently logged in member including Personal details, Home Gym details, and membership status
@@ -88,4 +109,28 @@ func (c *Client) GetMember() (*GetMemberResponse, error) {
 	}
 
 	return &member, nil
+}
+
+func (c *Client) GetMemberQRCode() (*GetMemberQRCodeResponse, error) {
+	route := "member/qrcode"
+
+	var qrCode GetMemberQRCodeResponse
+	err := c.sendRequest("GET", route, nil, &qrCode)
+	if err != nil {
+		return nil, err
+	}
+
+	return &qrCode, nil
+}
+
+func (c *Client) GetMembership() (*GetMembershipResponse, error) {
+	route := "member/membership"
+
+	var membership GetMembershipResponse
+	err := c.sendRequest("GET", route, nil, &membership)
+	if err != nil {
+		return nil, err
+	}
+
+	return &membership, nil
 }
