@@ -95,11 +95,15 @@ func (c *Client) Login() error {
 	return nil
 }
 
-func (c *Client) sendRequest(method string, route string, body io.Reader, v interface{}) error {
+func (c *Client) sendRequest(method string, route string, body io.Reader, queryParams url.Values, v interface{}) error {
 	requestPath := fmt.Sprintf("%s%s", c.baseURL, route)
 
-	req, err := http.NewRequest(method, requestPath, body)
+	// Add query parameters to the request path
+	if len(queryParams) > 0 {
+		requestPath += "?" + queryParams.Encode()
+	}
 
+	req, err := http.NewRequest(method, requestPath, body)
 	if err != nil {
 		return fmt.Errorf("error creating request: %v", err)
 	}

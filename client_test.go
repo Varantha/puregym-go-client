@@ -14,11 +14,6 @@ var (
 		"error":             "invalid_grant",
 		"error_description": "invalid_username_or_password",
 	}
-
-	ValidEmail   = "member@example.com"
-	ValidPin     = "12341234"
-	InvalidEmail = "test@example.com"
-	InvalidPin   = "43214321"
 )
 
 func TestNewClient(t *testing.T) {

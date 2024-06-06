@@ -9,6 +9,10 @@ var (
 		Token_type:  "Bearer",
 		Scope:       "pgcapi",
 	}
+	ValidEmail   = "member@example.com"
+	ValidPin     = "12341234"
+	InvalidEmail = "test@example.com"
+	InvalidPin   = "43214321"
 )
 
 func setupMockLogin() {

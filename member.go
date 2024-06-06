@@ -103,7 +103,7 @@ func (c *Client) GetMember() (*GetMemberResponse, error) {
 	route := "member"
 
 	var member GetMemberResponse
-	err := c.sendRequest("GET", route, nil, &member)
+	err := c.sendRequest("GET", route, nil, nil, &member)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (c *Client) GetMemberQRCode() (*GetMemberQRCodeResponse, error) {
 	route := "member/qrcode"
 
 	var qrCode GetMemberQRCodeResponse
-	err := c.sendRequest("GET", route, nil, &qrCode)
+	err := c.sendRequest("GET", route, nil, nil, &qrCode)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func (c *Client) GetMembership() (*GetMembershipResponse, error) {
 	route := "member/membership"
 
 	var membership GetMembershipResponse
-	err := c.sendRequest("GET", route, nil, &membership)
+	err := c.sendRequest("GET", route, nil, nil, &membership)
 	if err != nil {
 		return nil, err
 	}
