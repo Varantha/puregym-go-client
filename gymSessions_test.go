@@ -20,9 +20,21 @@ var (
 func TestGetGymSessions(t *testing.T) {
 	defer gock.Off()
 
+	route := "/api/v2/gymSessions/gym"
+	response := GetGymSessionsSuccessResponse
+
 	setupMockLogin()
 
-	setupDefaultMockRoutes("/api/v2/gymSessions/gym", GetGymSessionsSuccessResponse)
+	gock.New("https://capi.puregym.com").
+		Get(route).
+		MatchHeader("Authorization", "^Bearer\\s.+").
+		MatchParam("gymId", "^[0-9]+$").
+		Reply(200).
+		JSON(response)
+
+	gock.New("https://capi.puregym.com").
+		Get(route).
+		Reply(401)
 
 	client := NewClient(ValidEmail, ValidPin)
 
@@ -41,6 +53,11 @@ func TestGetGymSessions(t *testing.T) {
 		// Assert
 		assert.NoError(t, err)
 		assert.Equal(t, expectedResponse, response)
+	})
+
+	t.Run("fail with no gymId", func(t *testing.T) {
+		_, err := client.GetGymSessions("")
+		assert.Error(t, err)
 	})
 
 }

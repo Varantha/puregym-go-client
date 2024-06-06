@@ -17,7 +17,7 @@ func (c *Client) GetGymSessions(gymId string) (*GetGymSessionsGymResponse, error
 	params.Add("gymId", gymId)
 
 	var gymSessions GetGymSessionsGymResponse
-	err := c.sendRequest("GET", route, nil, nil, &gymSessions)
+	err := c.sendRequest("GET", route, nil, params, &gymSessions)
 	if err != nil {
 		return nil, err
 	}
