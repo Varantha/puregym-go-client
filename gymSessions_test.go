@@ -15,6 +15,53 @@ var (
 		LastRefreshed:        "2024-06-06T19:42:08.105643Z",
 		MaximumCapacity:      0,
 	}
+	GetMemberGymSessionsSuccessResponse = GetMemberGymSessionsResponse{
+		Summary: Summary{
+			Total: MemberActivity{
+				Activities: 0,
+				Visits:     2,
+				Duration:   61,
+			},
+			ThisWeek: MemberActivity{
+				Activities: 0,
+				Visits:     0,
+				Duration:   0,
+			},
+		},
+		Visits: []Visit{
+			{
+				IsDurationEstimated: false,
+				Gym: Gym{
+					ID:          236,
+					Name:        "London Camden",
+					Status:      "Blocked",
+					Location:    Location{},
+					GymAccess:   GymAccess{},
+					ContactInfo: ContactDetails{},
+					TimeZone:    "",
+				},
+				StartTime: "2024-05-12T09:16:00",
+				Duration:  21,
+				Name:      nil,
+			},
+			{
+				IsDurationEstimated: false,
+				Gym: Gym{
+					ID:          236,
+					Name:        "London Camden",
+					Status:      "Blocked",
+					Location:    Location{},
+					GymAccess:   GymAccess{},
+					ContactInfo: ContactDetails{},
+					TimeZone:    "",
+				},
+				StartTime: "2024-03-10T10:26:00",
+				Duration:  40,
+				Name:      nil,
+			},
+		},
+		Activities: []Activity{},
+	}
 )
 
 func TestGetGymSessions(t *testing.T) {
