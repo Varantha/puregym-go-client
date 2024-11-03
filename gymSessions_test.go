@@ -2,6 +2,7 @@ package puregymapi
 
 import (
 	"testing"
+	"time"
 
 	"github.com/h2non/gock"
 	"github.com/stretchr/testify/assert"
@@ -107,4 +108,92 @@ func TestGetGymSessions(t *testing.T) {
 		assert.Error(t, err)
 	})
 
+}
+
+func TestGetMemberGymSessionsBetween(t *testing.T) {
+	defer gock.Off()
+
+	route := "/api/v2/gymSessions/member"
+	response := GetMemberGymSessionsSuccessResponse
+
+	setupMockLogin()
+
+	gock.New("https://capi.puregym.com").
+		Get(route).
+		MatchHeader("Authorization", "^Bearer\\s.+").
+		MatchParam("fromDate", "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$").
+		MatchParam("toDate", "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$").
+		Reply(200).
+		JSON(response)
+
+	gock.New("https://capi.puregym.com").
+		Get(route).
+		Reply(401)
+
+	client := NewClient(ValidEmail, ValidPin)
+
+	fromDate, _ := time.Parse("2006-01-02T15:04:05", "2024-01-01T00:00:00")
+	toDate, _ := time.Parse("2006-01-02T15:04:05", "2024-12-31T23:59:59")
+
+	t.Run("unauthenticated request fails", func(t *testing.T) {
+		_, err := client.GetMemberGymSessionsBetween(&fromDate, &toDate)
+		assert.Error(t, err)
+	})
+
+	client.Login()
+
+	t.Run("returns membership details", func(t *testing.T) {
+		// Arrange
+		expectedResponse := &GetMemberGymSessionsSuccessResponse
+		// Act
+		response, err := client.GetMemberGymSessionsBetween(&fromDate, &toDate)
+		// Assert
+		assert.NoError(t, err)
+		assert.Equal(t, expectedResponse, response)
+	})
+
+	t.Run("fail with no gymId", func(t *testing.T) {
+		_, err := client.GetGymSessions("")
+		assert.Error(t, err)
+	})
+}
+
+func TestGetMemberGymSessions(t *testing.T) {
+	defer gock.Off()
+
+	route := "/api/v2/gymSessions/member"
+	response := GetMemberGymSessionsSuccessResponse
+
+	setupMockLogin()
+
+	gock.New("https://capi.puregym.com").
+		Get(route).
+		MatchHeader("Authorization", "^Bearer\\s.+").
+		MatchParam("fromDate", "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$").
+		MatchParam("toDate", "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$").
+		Reply(200).
+		JSON(response)
+
+	gock.New("https://capi.puregym.com").
+		Get(route).
+		Reply(401)
+
+	client := NewClient(ValidEmail, ValidPin)
+
+	t.Run("unauthenticated request fails", func(t *testing.T) {
+		_, err := client.GetMemberGymSessions()
+		assert.Error(t, err)
+	})
+
+	client.Login()
+
+	t.Run("returns membership details", func(t *testing.T) {
+		// Arrange
+		expectedResponse := &GetMemberGymSessionsSuccessResponse
+		// Act
+		response, err := client.GetMemberGymSessions()
+		// Assert
+		assert.NoError(t, err)
+		assert.Equal(t, expectedResponse, response)
+	})
 }

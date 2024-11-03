@@ -1,6 +1,7 @@
 package puregymapi
 
 import (
+	"errors"
 	"net/url"
 	"time"
 )
@@ -45,6 +46,10 @@ type Activity struct {
 func (c *Client) GetGymSessions(gymId string) (*GetGymSessionsGymResponse, error) {
 	route := "gymSessions/gym"
 
+	if gymId == "" {
+		return nil, errors.New("gymId cannot be empty")
+	}
+
 	params := url.Values{}
 	params.Add("gymId", gymId)
 
@@ -57,47 +62,25 @@ func (c *Client) GetGymSessions(gymId string) (*GetGymSessionsGymResponse, error
 	return &gymSessions, nil
 }
 
-// HistoryOptions holds the optional parameters for fetching user history
-type HistoryOptions struct {
-	StartDate *time.Time
-	EndDate   *time.Time
+func (c *Client) GetMemberGymSessions() (*GetMemberGymSessionsResponse, error) {
+	now := time.Now()
+	fromDate := now.AddDate(0, -3, 0)
+
+	return c.GetMemberGymSessionsBetween(&fromDate, &now)
 }
 
-// Option is a function that sets some option on the HistoryOptions
-type Option func(*HistoryOptions)
-
-// WithStartDate sets the start date option
-func WithStartDate(date time.Time) Option {
-	return func(opts *HistoryOptions) {
-		opts.StartDate = &date
-	}
-}
-
-// WithEndDate sets the end date option
-func WithEndDate(date time.Time) Option {
-	return func(opts *HistoryOptions) {
-		opts.EndDate = &date
-	}
-}
-
-func (c *Client) GetMemberGymSessions(opts ...Option) (*GetMemberGymSessionsResponse, error) {
+func (c *Client) GetMemberGymSessionsBetween(fromDate *time.Time, toDate *time.Time) (*GetMemberGymSessionsResponse, error) {
 	route := "gymSessions/member"
 
-	// Default options
-	options := &HistoryOptions{}
-
-	// Apply each option to the HistoryOptions
-	for _, opt := range opts {
-		opt(options)
+	if fromDate == nil || toDate == nil {
+		return nil, errors.New("fromDate and toDate cannot be nil")
 	}
 
 	params := url.Values{}
-	if options.StartDate != nil {
-		params.Add("fromDate", options.StartDate.Format("2006-01-02T15:04:05"))
-	}
-	if options.EndDate != nil {
-		params.Add("toDate", options.EndDate.Format("2006-01-02T15:04:05"))
-	}
+
+	params.Add("fromDate", fromDate.Format("2006-01-02T15:04:05"))
+
+	params.Add("toDate", toDate.Format("2006-01-02T15:04:05"))
 
 	var gymSessions GetMemberGymSessionsResponse
 	err := c.sendRequest("GET", route, nil, params, &gymSessions)
