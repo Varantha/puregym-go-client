@@ -21,14 +21,14 @@ func TestNewClient(t *testing.T) {
 
 	setupMockLogin()
 
-	client := NewClient(ValidEmail, ValidPin)
+	client := NewClient(validEmail, validPin)
 
 	t.Run("username set correctly", func(t *testing.T) {
-		assert.Equal(t, ValidEmail, client.username)
+		assert.Equal(t, validEmail, client.username)
 	})
 
 	t.Run("pin set correctly", func(t *testing.T) {
-		assert.Equal(t, ValidPin, client.password)
+		assert.Equal(t, validPin, client.password)
 	})
 }
 
@@ -39,8 +39,8 @@ func TestLogin(t *testing.T) {
 		"client_id":  {"ro.client"},
 		"scope":      {"pgcapi"},
 		"grant_type": {"password"},
-		"username":   {ValidEmail},
-		"password":   {ValidPin},
+		"username":   {validEmail},
+		"password":   {validPin},
 	}
 
 	validBody := strings.NewReader(validBodyValues.Encode())
@@ -50,7 +50,7 @@ func TestLogin(t *testing.T) {
 		MatchType("url").
 		Body(validBody).
 		Reply(200).
-		JSON(SuccessfulTokenResponse)
+		JSON(successfulTokenResponse)
 
 	gock.New("https://auth.puregym.com").
 		Post("/connect/token").
@@ -64,10 +64,10 @@ func TestLogin(t *testing.T) {
 		email       string
 		pin         string
 	}{
-		{"valid login", false, ValidEmail, ValidPin},
-		{"invalid login", true, InvalidEmail, InvalidPin},
-		{"invalid pin", true, ValidEmail, InvalidPin},
-		{"invalid email", true, InvalidEmail, ValidPin},
+		{"valid login", false, validEmail, validPin},
+		{"invalid login", true, invalidEmail, invalidPin},
+		{"invalid pin", true, validEmail, invalidPin},
+		{"invalid email", true, invalidEmail, validPin},
 	}
 
 	for _, tc := range testCases {

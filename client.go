@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	BaseURLV2 = "https://capi.puregym.com/api/v2/"
-	AuthUrl   = "https://auth.puregym.com/connect/token"
+	baseURLV2 = "https://capi.puregym.com/api/v2/"
+	authUrl   = "https://auth.puregym.com/connect/token"
 )
 
 type (
@@ -39,8 +39,8 @@ type (
 
 func NewClient(emailAddress string, pin string) *Client {
 	return &Client{
-		baseURL:  BaseURLV2,
-		authHost: AuthUrl,
+		baseURL:  baseURLV2,
+		authHost: authUrl,
 		httpClient: &http.Client{
 			Timeout: time.Minute,
 		},

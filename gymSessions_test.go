@@ -84,7 +84,7 @@ func TestGetGymSessions(t *testing.T) {
 		Get(route).
 		Reply(401)
 
-	client := NewClient(ValidEmail, ValidPin)
+	client := NewClient(validEmail, validPin)
 
 	t.Run("unauthenticated request fails", func(t *testing.T) {
 		_, err := client.GetGymSessions("236")
@@ -130,7 +130,7 @@ func TestGetMemberGymSessionsBetween(t *testing.T) {
 		Get(route).
 		Reply(401)
 
-	client := NewClient(ValidEmail, ValidPin)
+	client := NewClient(validEmail, validPin)
 
 	fromDate, _ := time.Parse("2006-01-02T15:04:05", "2024-01-01T00:00:00")
 	toDate, _ := time.Parse("2006-01-02T15:04:05", "2024-12-31T23:59:59")
@@ -178,7 +178,7 @@ func TestGetMemberGymSessions(t *testing.T) {
 		Get(route).
 		Reply(401)
 
-	client := NewClient(ValidEmail, ValidPin)
+	client := NewClient(validEmail, validPin)
 
 	t.Run("unauthenticated request fails", func(t *testing.T) {
 		_, err := client.GetMemberGymSessions()

@@ -154,7 +154,7 @@ func TestGetMember(t *testing.T) {
 
 	setupDefaultMockRoutes("/api/v2/member", GetMemberSuccessResponse)
 
-	client := NewClient(ValidEmail, ValidPin)
+	client := NewClient(validEmail, validPin)
 
 	t.Run("unauthenticated request fails", func(t *testing.T) {
 		_, err := client.GetMember()
@@ -181,7 +181,7 @@ func TestGetMemberQRCode(t *testing.T) {
 	setupMockLogin()
 	setupDefaultMockRoutes("/api/v2/member/qrcode", GetMemberQRCodeSuccessResponse)
 
-	client := NewClient(ValidEmail, ValidPin)
+	client := NewClient(validEmail, validPin)
 
 	t.Run("unauthenticated request fails", func(t *testing.T) {
 		_, err := client.GetMemberQRCode()
@@ -209,7 +209,7 @@ func TestGetMembership(t *testing.T) {
 
 	setupDefaultMockRoutes("/api/v2/member/membership", GetMembershipSuccessResponse)
 
-	client := NewClient(ValidEmail, ValidPin)
+	client := NewClient(validEmail, validPin)
 
 	t.Run("unauthenticated request fails", func(t *testing.T) {
 		_, err := client.GetMembership()
