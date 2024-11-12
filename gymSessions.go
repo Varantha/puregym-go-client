@@ -41,6 +41,7 @@ type Visit struct {
 
 type Activity struct {
 	// Define the fields of the Activity struct here
+	// I've never done an activity so I don't know what the fields are
 }
 
 func (c *Client) GetGymSessions(gymId string) (*GetGymSessionsGymResponse, error) {
