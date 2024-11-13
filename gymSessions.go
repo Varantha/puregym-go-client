@@ -39,11 +39,13 @@ type Visit struct {
 	Name                *string `json:"Name"`
 }
 
+// I've never done an activity so I don't know what the fields are.
 type Activity struct {
 	// Define the fields of the Activity struct here
-	// I've never done an activity so I don't know what the fields are
 }
 
+// GetGymSessions retrieves gym sessions for a specific gym by its ID.
+// It sends a GET request to the "gymSessions/gym" endpoint with the gym ID as a parameter.
 func (c *Client) GetGymSessions(gymId string) (*GetGymSessionsGymResponse, error) {
 	route := "gymSessions/gym"
 

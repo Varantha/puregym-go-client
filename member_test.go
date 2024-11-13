@@ -54,7 +54,10 @@ var (
 				},
 			},
 			GymAccess: GymAccess{
-				AccessOptions: "Dummy Access Options",
+				AccessOptions: AccessOptions{
+					PinAccess:    true,
+					QrCodeAccess: true,
+				},
 				OpeningHours: OpeningHours{
 					IsAlwaysOpen: true,
 					OpeningHours: []interface{}{"Dummy Opening Hours"},
@@ -117,7 +120,10 @@ var (
 					},
 				},
 				GymAccess: GymAccess{
-					AccessOptions: "Dummy Access Options",
+					AccessOptions: AccessOptions{
+						PinAccess:    true,
+						QrCodeAccess: true,
+					},
 					OpeningHours: OpeningHours{
 						IsAlwaysOpen: true,
 						OpeningHours: []interface{}{"Dummy Opening Hours"},

@@ -31,45 +31,6 @@ type PersonalDetails struct {
 	Address        Address        `json:"Address"`
 }
 
-type GeoLocation struct {
-	Longitude float64 `json:"Longitude"`
-	Latitude  float64 `json:"Latitude"`
-}
-
-type Location struct {
-	Address     Address     `json:"Address"`
-	GeoLocation GeoLocation `json:"GeoLocation"`
-}
-
-type OpeningHours struct {
-	IsAlwaysOpen bool          `json:"IsAlwaysOpen"`
-	OpeningHours []interface{} `json:"OpeningHours"`
-}
-
-type StandardOpeningTime struct {
-	DayOfWeek string `json:"DayOfWeek"`
-	StartTime string `json:"StartTime"`
-	EndTime   string `json:"EndTime"`
-	IsHoliday bool   `json:"IsHoliday"`
-}
-
-type GymAccess struct {
-	AccessOptions        interface{}           `json:"AccessOptions"`
-	OpeningHours         OpeningHours          `json:"OpeningHours"`
-	StandardOpeningTimes []StandardOpeningTime `json:"StandardOpeningTimes"`
-	ReopenDate           string                `json:"ReopenDate"`
-}
-
-type Gym struct {
-	ID          int            `json:"Id"`
-	Name        string         `json:"Name"`
-	Status      string         `json:"Status"`
-	Location    Location       `json:"Location"`
-	GymAccess   GymAccess      `json:"GymAccess"`
-	ContactInfo ContactDetails `json:"ContactInfo"`
-	TimeZone    string         `json:"TimeZone"`
-}
-
 type GetMemberResponse struct {
 	ID              ID              `json:"Id"`
 	PersonalDetails PersonalDetails `json:"PersonalDetails"`
@@ -98,7 +59,8 @@ type GetMembershipResponse struct {
 	FreezeDetails     string      `json:"FreezeDetails"`
 }
 
-// GetMember gets information for the currently logged in member including Personal details, Home Gym details, and membership status
+// GetMember retrieves the member details from the API.
+// It sends a GET request to the "member" endpoint and returns a GetMemberResponse struct.
 func (c *Client) GetMember() (*GetMemberResponse, error) {
 	route := "member"
 
@@ -111,6 +73,8 @@ func (c *Client) GetMember() (*GetMemberResponse, error) {
 	return &member, nil
 }
 
+// GetMemberQRCode retrieves the member's QR code from the API.
+// It sends a GET request to the "member/qrcode" endpoint and returns a GetMemberQRCodeResponse struct.
 func (c *Client) GetMemberQRCode() (*GetMemberQRCodeResponse, error) {
 	route := "member/qrcode"
 
@@ -123,6 +87,8 @@ func (c *Client) GetMemberQRCode() (*GetMemberQRCodeResponse, error) {
 	return &qrCode, nil
 }
 
+// GetMembership retrieves the membership details from the API.
+// It sends a GET request to the "member/membership" endpoint and returns a GetMembershipResponse struct.
 func (c *Client) GetMembership() (*GetMembershipResponse, error) {
 	route := "member/membership"
 
